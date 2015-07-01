@@ -1,0 +1,11 @@
+﻿<UserControl x:Class="TestTech_WPF_HwndSource.theUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" Background="#FFEA0B0B" Loaded="UserControl_Loaded" IsVisibleChanged="UserControl_IsVisibleChanged" Initialized="UserControl_Initialized" SizeChanged="UserControl_SizeChanged" Unloaded="UserControl_Unloaded">
+    <Grid Background="#FF1141E4">
+        <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="62"/>
+    </Grid>
+</UserControl>
