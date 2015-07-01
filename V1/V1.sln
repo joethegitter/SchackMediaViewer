@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTech_WPF_ScSvStub", "Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Winforms_ScSvStub", "Winforms_ScSvStub\Winforms_ScSvStub.csproj", "{3CC8F454-8C27-46AF-A709-38ADE24B2C43}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NewSolutionsFolder", "NewSolutionsFolder", "{8C4AEE79-03B5-4AC6-8EFB-4FCC8C753AC8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
