@@ -8,10 +8,10 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("SchackMediaViewer")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("This is the Assembly Description")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SchackMediaViewer")]
+[assembly: AssemblyProduct("Schack Media Viewer")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

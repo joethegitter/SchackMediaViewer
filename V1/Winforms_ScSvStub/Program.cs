@@ -57,15 +57,16 @@ namespace SchackSaverStub
 
         #region Data
 
-        // If DEBUG and LAUNCH_APP_FROM_DEV_PATH are both is defined, edit 
+        // If DEBUG and LAUNCH_APP_FROM_DEV_PATH are both is defined, use 
         // this PATH variable to optionally launch the debug version of 
         // your app from your development directory. Otherwise, the stub will 
         // expect to find your application in the same directory as the stub.
+
 #if DEBUG
     #if LAUNCH_APP_FROM_DEV_PATH
-            public static string PATH = @"C:\Users\LocallyMe\Documents\Visual Studio 2013\Projects\SchackSvr\SchackSvr\bin\Debug";
+        public static string PATH = @"C:\Users\LocallyMe\Source\Repos\SchackMediaViewer\V1\SchackMediaViewer\bin\Debug";
     #else
-            public static string PATH = System.IO.Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
+            public static string PATH = Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
     #endif
 #else
         // fully qualified path and filename of executing exe is in arg[0]
@@ -74,10 +75,10 @@ namespace SchackSaverStub
 #endif
 
         // Filename of the application the stub will launch
-        public static string TARGET_BASE = "SchackSvr";
+        public static string TARGET_BASE = "SchackMediaViewer";
         public static string TARGET_EXT = ".exe";
         public static string TARGET = 
-            System.IO.Path.Combine(PATH,TARGET_BASE + TARGET_EXT);
+                    Path.Combine(PATH,TARGET_BASE + TARGET_EXT);
 
         // Filename elements, command line args and keystates that tell our
         // application to pop up debugOutputWindow on a timer after launch.
