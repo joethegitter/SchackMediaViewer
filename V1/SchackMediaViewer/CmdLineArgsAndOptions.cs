@@ -99,9 +99,10 @@ namespace SchackMediaViewer
 
             string launchString = M_SCREENSAVER;
 
+            // TODO: Joe, translate exceptions into MsgBox errors.
+
             // First, handle only the very rigorous "we were launched from the scr stub" case.
             // Note "/scr" was already detected, and noted in fRunFromScreenSaverStub
-            int lastProcessedIndex = -1;
             if (fLaunchedFromStub)  // set for us by SetDebugOutputAndHostOptions()
             {
                 // Logic:
@@ -118,7 +119,6 @@ namespace SchackMediaViewer
                     throw new ArgumentException(@"CommandLine: /scr can only appear as the first argument." +
                     Environment.NewLine + Environment.CommandLine);
                 }
-                lastProcessedIndex = 0;
 
                 // second arg must be one of four valid /scr-related arguments
                 if ((mainArgs.Length > 1) && !scrArgs.Contains(mainArgs[1].ToLowerInvariant()))
@@ -127,7 +127,6 @@ namespace SchackMediaViewer
                     throw new ArgumentException(@"CommandLine: /scr must be followed by a valid /scr-related argument." +
                     Environment.NewLine + Environment.CommandLine);
                 }
-                lastProcessedIndex = 1;
 
                 // if second arg starts with cp_ it must be followed with a valid window handle
                 if (mainArgs[1].ToLowerInvariant() == M_CP_CONFIGURE || mainArgs[1].ToLowerInvariant() == M_CP_MINIPREVIEW)
@@ -164,7 +163,6 @@ namespace SchackMediaViewer
                         throw new ArgumentException(@"CommandLine: /cp_ argument missing required subargument." +
                             Environment.NewLine + Environment.CommandLine);
                     }
-                    lastProcessedIndex = 2;
                 }
 
                 // by this point, a valid mode is in mainArgs[1] and hWnd is either IntPtr.Zero or a numerically validated hWnd.
