@@ -64,7 +64,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CmdLineArgsAndOptions.cs" />
+    <Compile Include="CommandLineStuff.cs" />
     <Compile Include="OpenTheWindows.cs" />
     <Compile Include="PreviewControl.xaml.cs">
       <DependentUpon>PreviewControl.xaml</DependentUpon>
