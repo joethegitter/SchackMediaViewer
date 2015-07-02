@@ -68,7 +68,7 @@ namespace SchackMediaViewer
             }
 
 
-            Log("SetupLoggingOptions(): entered.");
+            Log("SetupLoggingOptions(): exiting.");
         }
 
         private void GetLaunchMode(StartupEventArgs SEArgs, out LaunchModality LaunchMode, out IntPtr hWnd)

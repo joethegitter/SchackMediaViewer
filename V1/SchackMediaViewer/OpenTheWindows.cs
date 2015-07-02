@@ -23,15 +23,16 @@ namespace SchackMediaViewer
         /// <param name="hWnd"></param>
         private void OpenAppropriateWindow(LaunchModality LaunchMode, IntPtr hWnd)
         {
+            Log("OpenAppropriateWindow() entered.");
             // Based on Launch Mode, show the correct window in the correct place
             if (LaunchMode == LaunchModality.DT_Configure)
             {
-                Log("   OnStartup(): LaunchMode = DT_Configure");
+                Log("   OpenAppropriateWindow(): LaunchMode = DT_Configure");
                 ShowSettings();
             }
             else if (LaunchMode == LaunchModality.CP_Configure)
             {
-                Log("   OnStartup(): LaunchMode = CP_Configure");
+                Log("   OpenAppropriateWindow(): LaunchMode = CP_Configure");
                 ShowSettings(hWnd);
             }
             else if (LaunchMode == LaunchModality.ScreenSaver)
@@ -41,23 +42,23 @@ namespace SchackMediaViewer
             }
             else if (LaunchMode == LaunchModality.ScreenSaverWindowed)
             {
-                Log("   OnStartup(): LaunchMode = ScreenSaverWindowed");
+                Log("   OpenAppropriateWindow(): LaunchMode = ScreenSaverWindowed");
                 ShowScreenSaver(true);
             }
             else if (LaunchMode == LaunchModality.CP_MiniPreview)
             {
-                Log("   OnStartup(): LaunchMode = CP_MiniPreview");
+                Log("   OpenAppropriateWindow(): LaunchMode = CP_MiniPreview");
                 ShowPreview(hWnd);
             }
             else if (LaunchMode == LaunchModality.Undecided)
             {
-                Log(" ** OnStartup() Error: LaunchMode == LaunchModality.Undecided");
+                Log(" ** OpenAppropriateWindow() Error: LaunchMode == LaunchModality.Undecided");
 
 #if DEBUG
                 // if we are in DEBUG and there's a debugger attached, offer to break into it
                 if (System.Diagnostics.Debugger.IsAttached)
                 {
-                    Log(" ** OnStartup() Breaking into debugger...");
+                    Log(" ** OpenAppropriateWindow() Breaking into debugger...");
 
                     MessageBoxResult mbr = MessageBox.Show("Apparently we are still in LaunchMode.Undecided. Cancel to break into debugger, or OK to launch in Full Screen mode." +
                         Environment.NewLine + Environment.NewLine + "CommandLine: " + Environment.CommandLine,
@@ -71,18 +72,23 @@ namespace SchackMediaViewer
 #endif
 
                 // In release version, we'll just quietly fail here, and launch in desktop Configure mode
-                Log(" ** OnStartup(): we fell through to Mode.Undecided, calling Application.Run().");
+                Log(" ** OpenAppropriateWindow(): we fell through to Mode.Undecided, calling ShowSettings().");
                 ShowSettings();
-                Log(" ** OnStartup()(): exiting for realsies.");
             }
+
+            Log("OpenAppropriateWindow() exiting.");
         }
 
         private void ShowSettings()
         {
+            Log("ShowSettings() entered.");
+            Log("ShowSettings() exiting.");
         }
 
         private void ShowSettings(IntPtr hWnd)
         {
+            Log("ShowSettings(hWnd) entered.");
+            Log("ShowSettings(hWnd) exiting.");
         }
 
         /// <summary>
@@ -91,6 +97,8 @@ namespace SchackMediaViewer
         /// <param name="InWindowedMode"></param>
         private void ShowScreenSaver(bool InWindowedMode)
         {
+            Log("ShowScreenSaver(" + InWindowedMode + ") entered.");
+            Log("ShowScreenSaver(" + InWindowedMode + ") exiting.");
         }
 
         /// <summary>
@@ -181,7 +189,7 @@ namespace SchackMediaViewer
                 throw new ArgumentException("Invalid hWnd passed to ShowPreview(): " + hWnd.ToString());
             }
 
-            Log("ShowPreview(): Exited.");
+            Log("ShowPreview(): exiting.");
         }
 
     }
