@@ -55,46 +55,70 @@ namespace SchackSaverStub
     static class StubScr
     {
 
-        #region Data
+        #region Configure
 
-        // If DEBUG and LAUNCH_APP_FROM_DEV_PATH are both is defined, use 
-        // this PATH variable to optionally launch the debug version of 
-        // your app from your development directory. Otherwise, the stub will 
-        // expect to find your application in the same directory as the stub.
+        // Use the following variables to control the name and location of 
+        // the application to be launched by the stub. These will be combined
+        // at the end of the program as TARGET. Note the role of the variables
+        // DebugDefined and UseDevPath (defined in #region "Translate Pound
+        // Defines to Variables").
 
-#if DEBUG
-    #if LAUNCH_APP_FROM_DEV_PATH
-        public static string PATH = @"C:\Users\LocallyMe\Source\Repos\SchackMediaViewer\V1\SchackMediaViewer\bin\Debug";
-    #else
-            public static string PATH = Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
-    #endif
-#else
-        // fully qualified path and filename of executing exe is in arg[0]
-        public static string PATH = 
+        // Arg[0] is the fully qualified path and filename of this stub,
+        // so we can steal it's path.
+        public static string TARGET_PATH =
             Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
-#endif
-
-        // Filename of the application the stub will launch
         public static string TARGET_BASE = "SchackMediaViewer";
         public static string TARGET_EXT = ".exe";
-        public static string TARGET = 
-                    Path.Combine(PATH,TARGET_BASE + TARGET_EXT);
+        public static string TARGET = "<this is constructed later>";
 
-        // Filename elements, command line args and keystates that tell our
-        // application to pop up debugOutputWindow on a timer after launch.
+        // set fAlwaysDescribeKeys to true if you want to *always* see a
+        // debugging summary of the modifier key states at stub launch.
+        public static bool fAlwaysDescribeKeys = false;
+
+        // set fShowArgsAlways to true if you want to *always* see a debugging 
+        // summary of the  incoming and outgoing args, overriding any other
+        // factors (key state results, etc).
+        public static bool fShowArgsAlways = true;
+
+        #endregion Configure
+
+        #region Data
+
+        // Filename elements, command line args and keystate results (certain 
+        // keys were held down when the stub was launched) that our stub 
+        // understands to mean - and will pass on as an argument to our app - 
+        // "pop up a debug output window some minimum number of seconds after 
+        // you start up". Ordinarily a user action (keypress, etc) would be 
+        // used to open that window; however, this option allows us to get the 
+        // window opened in circumstances where no user input is available 
+        // (like when we draw our preview in the control panel).
         public const string FILE_DBGWIN = ".popdbgwin";
         public const string POPDBGWIN = @"/popdbgwin";
-        public static bool fShiftKeyOnly = false;
+        public static bool modifierKeyState_DoPopDBGWin = false;
 
-        // Filename elements, command line args and keystates that tell our
-        // application to immediately start storing debug output in a 
-        // a buffer at launch (we normally only start when the debug window
-        // is opened, so we miss startup data)
+        // Filename elements, command line args and keystate results (certain 
+        // keys were held down when the stub was launched) that our stub 
+        // understands to mean - and will pass on as an argument to our app - 
+        // "start generating debug output and remember it until we show a 
+        // debug output window". Ordinarily we only start generating debug 
+        // output after we open a debug output window, which means we can't
+        // display any debug output generated during startup.
         public const string FILE_STARTBUFFER = ".startbuffer";
         public const string STARTBUFFER = @"/startbuffer";
-        public static bool fControlKeyOnly = false;
+        public static bool modifierKeyState_DoStartBuffer = false;
 
-        // Command line args that the stub will issue to your application:
+        // Keystate result that tells the stub to show a message box before
+        // launching our app. This message box contains the arguments fed to
+        // the stub by windows, and the args the stub will feed to our app at
+        // launch. The message box also allows us to simply read the data and
+        // then cancel the app launch (debugging assistance).
+        public static bool modifierKeyState_DoShowArgs = false;
+
+        // Keystate result that tells the stub to ignore any previous TARGET_PATH
+        // configuration and only launch the application from stub directory.
+        public static bool modifierKeyState_ForceNormalLaunch = false;
+
+        // Command line args that the stub will issue to our application:
         // 1. tells app that it was launched from the screen saver stub
         public const string FROMSTUB = @"/scr";
         // 2. tells app to open settings dlg in control panel
@@ -104,29 +128,224 @@ namespace SchackSaverStub
         // 4. tells app to open settings dlg on desktop
         public const string M_DT_CONFIGURE = @"/dt_configure";  
         // 5. tells app to open the screen saver in full screen
-        public const string M_SCREENSAVER = @"/screensaver";        
-
-        // Keystate that tells us to show the args received by the stub plus
-        // the launch string the stub will use to launch your application in a
-        // message box, before launching our app.
-        public static bool fAltKeyOnly = false;
+        public const string M_SCREENSAVER = @"/screensaver";
 
         #endregion Data
+
 
         /// <summary>
         /// The main entry point for the stub.
         /// </summary>
         [STAThread]
-        static void Main(string[] mainArgs)
+        public static void Main(string[] mainArgs)
         {
-            string debugOutput = "";
-            string scrArgs = "";
+            // capture state of modifier keys at launch
+            Keys mKeys = Control.ModifierKeys;
+            bool fAbortLaunch = false;
+
+            string FinalArgs = "";
+            string optionalArgs = "";
+
+            // Interpret any Modifier Keys held down at startup
+            InterpretModifierKeys(mKeys, ref fAbortLaunch);
+            if (fAbortLaunch) Application.Exit();
+
+            // Build the non-screen-saver-specific args
+            BuildOptionalArgs(ref optionalArgs);
+
+            // Translate Windows-provided screen saver args into our app args
+            TranslateScreenSaverArgs(mainArgs, ref FinalArgs);
+
+            // Combine the primary and optional args
+            FinalArgs += optionalArgs;
+
+            // Build the TARGET. Override TARGET_PATH if necessary
+            if (DebugDefined && UseDevPath &&
+                !modifierKeyState_ForceNormalLaunch)
+            {
+                TARGET_PATH = @"C:\Users\LocallyMe\Source\Repos\" +
+                    @"SchackMediaViewer\V1\SchackMediaViewer\bin\Debug";
+            }
+            TARGET = Path.Combine(TARGET_PATH, TARGET_BASE + TARGET_EXT);
+
+            // Optionally show message box with incoming and outgoing args
+            if (modifierKeyState_DoShowArgs || fShowArgsAlways)
+            {
+                DialogResult dr = MessageBox.Show("Incoming cmdLine: " + 
+                    System.Environment.CommandLine + Environment.NewLine +
+                    Environment.NewLine +
+                    "Outgoing cmdLine: " + TARGET + " " + FinalArgs + 
+                    Environment.NewLine + Environment.NewLine +
+                    "Click OK to launch, Cancel to abort." + 
+                    Environment.NewLine + Environment.NewLine,
+                    Application.ProductName, MessageBoxButtons.OKCancel, 
+                    MessageBoxIcon.Information);
+
+                // if user clicks Cancel, don't launch the exe
+                if (dr == DialogResult.Cancel)
+                {
+                    Application.Exit();
+                }
+            }
+
+            // Is the application where we think it is? If not bail.
+            if (!File.Exists(TARGET))  // 
+            {
+                DialogResult dr = MessageBox.Show("File not found: " + 
+                    TARGET, Application.ProductName, MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                Application.Exit();
+            }
+
+            // In the M_CP_CONFIGURE case: don't let the stub process die 
+            // until the instance of our app running the Settings dialog dies. 
+            // Why?
+            // 1. expected screen saver behavior is that the control panel 
+            //    Preview window stops drawing while the Settings dialog is
+            //    up. If you let the stub process die, Windows immediately
+            //    launches the Preview instance again, causing it to run in
+            //    the background while the Settings dialog is still up.
+            // 2. because of 1 above, when the Settings dialog is dismissed,
+            //    the Preview instance does not update with the changes made
+            //    from the Settings dialog.
+            System.Diagnostics.Process proc = null;
+            if (FinalArgs.Contains(M_CP_CONFIGURE))
+            {
+                proc = System.Diagnostics.Process.Start(TARGET, FinalArgs);
+                proc.WaitForExit();  // don't let stub die until app dies
+                return;
+            }
+            else  // in all other cases, fire and forget
+            {
+                proc = System.Diagnostics.Process.Start(TARGET, FinalArgs);
+                return;
+            }
+        }
+
+        /// <summary>
+        /// Gets modifier key states and sets corresponding flags.
+        /// </summary>
+        private static void InterpretModifierKeys(Keys mKeys, ref bool fAbortLaunch)
+        {
+            // Shift Key means pop up the debug window
+            if ((mKeys & Keys.Shift) == Keys.Shift)
+            {
+                modifierKeyState_DoPopDBGWin = true;
+            }
+
+            // Control Key means start the debug buffer
+            if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
+            {
+                modifierKeyState_DoStartBuffer = true;
+            }
+
+            // Alt Key means show the args message box
+            if ((Control.ModifierKeys & Keys.Alt) == Keys.Alt)
+            {
+                modifierKeyState_DoShowArgs = false;
+            }
+
+            // set fAlwaysDescribeKeys to true to force this debug dialog up
+            if (fAlwaysDescribeKeys)
+            {
+                string msg = "Keys States: " + Environment.NewLine +
+                    Environment.NewLine + 
+                    "Shift = " + modifierKeyState_DoPopDBGWin  +
+                    Environment.NewLine +
+                    "Control = " + modifierKeyState_DoStartBuffer +
+                    Environment.NewLine +
+                    "Alt = " + modifierKeyState_DoShowArgs +
+                    Environment.NewLine +
+                    "Caps Lock = " + Control.IsKeyLocked(Keys.CapsLock) +
+                    Environment.NewLine +
+                    "Scroll Lock = " + Control.IsKeyLocked(Keys.Scroll);
+                DialogResult dr = MessageBox.Show(msg, 
+                    Application.ProductName,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+            }
+
+            // If DEBUG was defined, see if we need to force normal launch
+            if (DebugDefined)
+            {
+                if (Control.IsKeyLocked(Keys.Scroll) && 
+                    Control.IsKeyLocked(Keys.CapsLock))
+                {
+                    string msg = "Debug Build: Caps Lock and Scroll " +
+                        "Lock are both locked. Force non-debug launch?" +
+                        Environment.NewLine + Environment.NewLine +
+                        "New path to exe will be: " + TARGET_PATH;
+                    DialogResult dr = MessageBox.Show(msg, 
+                        Application.ProductName, 
+                        MessageBoxButtons.YesNoCancel,
+                        MessageBoxIcon.Warning);
+
+                    if (dr == DialogResult.Cancel)
+                    {
+                        fAbortLaunch = true;
+                    }
+                    else if (dr == DialogResult.Yes)
+                    {
+                        modifierKeyState_ForceNormalLaunch = true;
+                    }
+                    else
+                    {
+                        modifierKeyState_ForceNormalLaunch = false;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Builds non-screen-related arguments passed to target application 
+        /// </summary>
+        private static void BuildOptionalArgs(ref string optionalArgs)
+        {
+            // RARE, but first priority: user can modify stub filename to get 
+            // certain behaviors. Check if the filename has been changed, and
+            // force post arguments.
+            if (Environment.GetCommandLineArgs()[0].ToLowerInvariant().
+                Contains(FILE_DBGWIN.ToLowerInvariant()))
+            {
+                optionalArgs += " " + POPDBGWIN;
+            }
+
+            // only one of the two filename-based optionalArgs is allowed, and 
+            // POPDBGWIN takes precedence. So if optionalArgs is still empty...
+            if (optionalArgs == "")
+            {
+                if (Environment.GetCommandLineArgs()[0].ToLowerInvariant().
+                    Contains(FILE_STARTBUFFER.ToLowerInvariant()))
+                {
+                    optionalArgs += " " + STARTBUFFER;
+                }
+            }
+
+            // ONLY if the filename was not modified, check to see if there's 
+            // a keystate result which impacts the postargs:
+            if (optionalArgs == "")
+            {
+                if (modifierKeyState_DoPopDBGWin)
+                    optionalArgs += " " + POPDBGWIN;
+                if (modifierKeyState_DoStartBuffer)
+                    optionalArgs += " " + STARTBUFFER;
+            }
+        }
+
+        /// <summary>
+        /// Builds screen-saver related arguments passed to target application
+        /// </summary>
+        private static void TranslateScreenSaverArgs(string[] mainArgs, ref string FinalArgs)
+        {
             string mode = "";
             bool fHasWindowHandle = false;
             string windowHandle = "";
 
-            // The incoming command line to this stub will ONLY ever be 
-            // the folling values (EB = Expected Behavior):
+            // Examine incoming args and build outgoing args.
+            // When Windows launches a screen saver, it sends specific 
+            // command line args. Those will only ever be the following
+            // (EB = the behavior that Windows expects):
             //  /S                - EB: run screensaver in fullscreen
             //                      so we pass /screensaver to our app
             //  /P windowHandle   - EB: show little Preview in control panel
@@ -138,46 +357,6 @@ namespace SchackSaverStub
             //  /C:windowHandle   - EB: show Settings modal to control panel
             //                      so we pass /cp_configure -windowHandle
 
-            // Capture the state of the Shift key and Control Key
-            // and ALT keys at stub launch.
-            // Note that in this implementation, we are checking to see if 
-            // each key is the ONLY modifier key being pressed. Combinations 
-            // of these keys will do nothing.
-            if (Control.ModifierKeys == Keys.Alt) fAltKeyOnly = true;
-            if (Control.ModifierKeys == Keys.Shift) fShiftKeyOnly = true;
-            if (Control.ModifierKeys == Keys.Control) fControlKeyOnly = true;
-
-            // RARE, but first priority: user can modify filename to get 
-            // certain behaviors. Check if the filename has been changed, 
-            // in order to force post arguments.
-            string postArgs = "";
-            if (Environment.GetCommandLineArgs()[0].ToLowerInvariant().
-                Contains(FILE_DBGWIN.ToLowerInvariant()))
-            {
-                postArgs += " " + POPDBGWIN;
-            }
-
-            // only one of the two filename-based postArgs is allowed, and 
-            // POPDBGWIN takes precedence. So if postArgs is still empty...
-            if (postArgs == "")
-            {
-                if (Environment.GetCommandLineArgs()[0].ToLowerInvariant().
-                    Contains(FILE_STARTBUFFER.ToLowerInvariant()))
-                {
-                    postArgs += " " + STARTBUFFER;
-                }
-            }
-
-            // If filename was not modified, check which keys were held 
-            // down at stub launch
-            if (postArgs == "")
-            {
-                // these are exclusive
-                if (fShiftKeyOnly) postArgs += " " + POPDBGWIN;
-                if (fControlKeyOnly) postArgs += " " + STARTBUFFER;
-            }
-
-            // Examine incoming args and build outgoing args.
             if (mainArgs.Length < 1) // no args
             {
                 mode = M_DT_CONFIGURE;
@@ -202,88 +381,47 @@ namespace SchackSaverStub
                     fHasWindowHandle = true;
                     windowHandle = mainArgs[0].Substring(3);
                 }
-
             }
             else if (mainArgs.Length < 3) // 2 args
             {
-                // can only be /P windowHandle
+                // can only be /P windowHandle (note space)
                 mode = M_CP_MINIPREVIEW;
                 fHasWindowHandle = true;
                 windowHandle = mainArgs[1];
             }
             else
             {
-                string msg = 
+                string msg =
                     "CommandLine had more than 2 arguments, could not parse.";
                 DialogResult dr = MessageBox.Show(msg,
                     Application.ProductName, MessageBoxButtons.OKCancel,
                     MessageBoxIcon.Information);
-                return;
+                Application.Exit();
             }
 
             // Finish outgoing command line
-            scrArgs = FROMSTUB + " " + mode;
+            FinalArgs = FROMSTUB + " " + mode;
             if (fHasWindowHandle)
             {
-                scrArgs = scrArgs + " -" + windowHandle;
-            }
-            scrArgs += postArgs;
-
-            // Decide whether to put up message box showing command line args.
-            // Change fShowArgsAlways to true if *always* want message box.
-            bool fShowArgsAlways = false;
-
-            if (fAltKeyOnly || fShowArgsAlways)
-            {
-                DialogResult dr = MessageBox.Show("Incoming cmdLine: " + 
-                    System.Environment.CommandLine + Environment.NewLine +
-                    Environment.NewLine +
-                    "Outgoing cmdLine: " + TARGET + " " + scrArgs + 
-                    Environment.NewLine + Environment.NewLine +
-                    "Click OK to launch, Cancel to abort." + 
-                    Environment.NewLine + Environment.NewLine + debugOutput,
-                    Application.ProductName, MessageBoxButtons.OKCancel, 
-                    MessageBoxIcon.Information);
-
-                // if user clicks Cancel, don't launch the exe
-                if (dr == DialogResult.Cancel)
-                {
-                    return;
-                }
-            }
-
-            // Is the application where we think it is?
-            if (!File.Exists(TARGET))  // 
-            {
-                DialogResult dr = MessageBox.Show("File not found: " + 
-                    TARGET, Application.ProductName, MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-                return;
-            }
-
-            // In the M_CP_CONFIGURE case: don't let the stub process die 
-            // until the instance of our app running the Settings dialog dies. 
-            // Why?
-            // 1. expected screen saver behavior is that the control panel 
-            //    Preview window stops drawing while the Settings dialog is
-            //    up. If you let the stub process die, Windows immediately
-            //    launches the Preview instance again, causing it to run in
-            //    the background while the Settings dialog is still up.
-            // 2. because of 1 above, when the Settings dialog is dismissed,
-            //    the Preview instance does not update with the changes made
-            //    from the Settings dialog.
-            System.Diagnostics.Process proc = null;
-            if (mode == M_CP_CONFIGURE)
-            {
-                proc = System.Diagnostics.Process.Start(TARGET, scrArgs);
-                proc.WaitForExit();  // don't let stub die until app dies
-                return;
-            }
-            else  // in all other cases, fire and forget
-            {
-                proc = System.Diagnostics.Process.Start(TARGET, scrArgs);
-                return;
+                FinalArgs = FinalArgs + " -" + windowHandle;
             }
         }
+
+        #region Translate Pound Defines to Variables
+
+        #if DEBUG
+                public static bool DebugDefined = true;
+            #if LAUNCH_APP_FROM_DEV_PATH
+                    public static bool UseDevPath = true;
+            #else
+                                    public static bool UseDevPath = true;
+            #endif
+        #else
+            public static bool DebugDefined = false;
+        #endif
+
+        #endregion Translate Pound Defines to Variables
+
+
     }
 }
