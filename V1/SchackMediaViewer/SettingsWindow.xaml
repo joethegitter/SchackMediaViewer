@@ -1,0 +1,8 @@
+﻿<Window x:Class="SchackMediaViewer.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="&lt;Title Not Set In Code!&gt;" Height="300" Width="300" WindowStyle="ToolWindow" ResizeMode="NoResize" ShowInTaskbar="False" Activated="Window_Activated" Closed="Window_Closed" Closing="Window_Closing" Deactivated="Window_Deactivated" GotFocus="Window_GotFocus" Initialized="Window_Initialized" IsVisibleChanged="Window_IsVisibleChanged" Loaded="Window_Loaded" LostFocus="Window_LostFocus" StateChanged="Window_StateChanged" Unloaded="Window_Unloaded">
+    <Grid>
+        
+    </Grid>
+</Window>

@@ -82,13 +82,71 @@ namespace SchackMediaViewer
         private void ShowSettings()
         {
             Log("ShowSettings() entered.");
+
+
             Log("ShowSettings() exiting.");
         }
 
         private void ShowSettings(IntPtr hWnd)
         {
-            Log("ShowSettings(hWnd) entered.");
-            Log("ShowSettings(hWnd) exiting.");
+            string hWndToString = "null";
+            bool fAbortShowSettings = false;
+
+            if (hWnd == IntPtr.Zero)
+            {
+                hWndToString = "IntPtr.Zero!";
+                fAbortShowSettings = true;
+            }
+            else if (hWnd == null)
+            {
+                fAbortShowSettings = true;
+            }
+            else
+            {
+                hWndToString = hWnd.ToString();
+                fAbortShowSettings = false;
+            }
+
+            Log("ShowSettings(" + hWndToString + ") entered.");
+
+            if (fAbortShowSettings)
+            {
+                Application.Current.Shutdown();
+            }
+
+            if (NativeMethods.IsWindow(hWnd))
+            {
+                Window settings = new SettingsWindow(hWnd);
+
+                // use Win32 API's to get the window handles we need for ShowModal
+
+                // Get the root owner window of the passed hWnd
+                int error = 0;
+                Log("  ShowSettings(): Getting Root Ancestor of passed hWnd: calling GetAncestor(hWnd, GetRoot)...");
+                NativeMethods.SetLastErrorEx(0, 0);
+                IntPtr passedWndRoot = NativeMethods.GetAncestor(hWnd, NativeMethods.GetAncestorFlags.GetRoot);
+                error = System.Runtime.InteropServices.Marshal.GetLastWin32Error();
+                Log("  ShowSettings(): GetAncestor() returned IntPtr: " + passedWndRoot.ToString());
+                Log("      GetLastError() returned: " + error.ToString());
+                Log(" ");
+
+                // and then show ourselves modal to that window
+                Log("  ShowSettings(): Building a Windows.Interop.WindowsInteropHelper for SettingsWindow...");
+                System.Windows.Interop.WindowInteropHelper wih = new System.Windows.Interop.WindowInteropHelper(settings);
+                Log("  ShowSettings(): Calling wih.EnsureHandle() to force SettingsWindow to have a Handle...");
+                wih.EnsureHandle();
+                Log("  ShowSettings(): Setting wih.Owner to Root Ancestor of passed in hWnd...");
+                wih.Owner = passedWndRoot;
+                Log("  ShowSettings(): Calling ShowDialog()");
+                settings.ShowDialog();
+            }
+            else
+            {
+                Log("  ShowSettings(): Invalid hWnd passed: " + hWnd.ToString());
+                throw new ArgumentException("Invalid hWnd passed to ShowMiniPreview(): " + hWnd.ToString());
+            }
+
+            Log("ShowSettings(" + hWnd.ToString() + ") exiting.");
         }
 
         /// <summary>
