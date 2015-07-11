@@ -57,28 +57,66 @@ namespace SchackSaverStub
 
         #region Configure
 
+        // Overrides
+
+        // set fShowKeystatesOverride to true if you want to *always* see a
+        // debugging summary of the modifier key states at stub launch;
+        // this switch overrides any other config factors (keystate results,
+        // etc.)
+        static bool fShowKeystatesOverride = false;
+
+        // set fShowArgsOverride to true if you want to *always* see 
+        // a debugging summary of the  incoming and outgoing args; this 
+        // switch overrides any other config factors (key state results, etc).
+        static bool fShowArgsOverride = true;
+
+        // set fNeverSeparateDebugExesOverride to true if you want the
+        // stub to ignore any other factors (key state results, etc) and
+        // NOT launch separately named debug exe's for CP_Preview and 
+        // CP_Settings
+        static bool fNeverSeparateDebugExesOverride = true;
+
+        // Filenames and Paths
+
         // Use the following variables to control the name and location of 
-        // the application to be launched by the stub. These will be combined
-        // at the end of the program as TARGET. Note the role of the variables
-        // DebugDefined and UseDevPath (defined in #region "Translate Pound
-        // Defines to Variables").
+        // the application(s) to be launched by the stub.
 
-        // Arg[0] is the fully qualified path and filename of this stub,
-        // so we can steal it's path.
-        public static string TARGET_PATH =
+        // Note that if DEBUG and USE_DEV_PATH are both defined in the build 
+        // options, the PATH variable will be overriden later in the code, 
+        // forcing the stub to launch the debug version of the exe(s) from a 
+        // specified DEV directory.
+
+        // Note also that if DEBUG and USE_DEV_PATH and SEPARATE_DBG_EXES 
+        // are all defined in the build options, separate dbg executables 
+        // can be specified for each of the screen saver launch modes 
+        // (normal, control panel preview, control panel configure/settings). 
+        // This helps prevent conflicts when debugging, since the control
+        // panel preview is always launched before the control panel 
+        // configure/settings dialog.
+
+        // Environment.GetCommandLineArgs()[0] returns the fully qualified 
+        // path and filename of the stub. We retreive that path to launch our 
+        // app from the same directory as the stub (System32).
+        static string TARGET_PATH =
             Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
-        public static string TARGET_BASE = "SchackMediaViewer";
-        public static string TARGET_EXT = ".exe";
-        public static string TARGET = "<this is constructed later>";
+        static string TARGET_BASE = "SchackMediaViewer";
+        static string TARGET_BASE_APPENDAGE = "";
+        static string TARGET_EXT = ".exe";
+        static string TARGET = "<this is constructed later>";
 
-        // set fAlwaysDescribeKeys to true if you want to *always* see a
-        // debugging summary of the modifier key states at stub launch.
-        public static bool fAlwaysDescribeKeys = false;
+        static string PREVIEW_TARGET_PATH =
+            Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
+        static string PREVIEW_TARGET_BASE = "SchackMediaViewer";
+        static string PREVIEW_TARGET_BASE_APPENDAGE = "";
+        static string PREVIEW_TARGET_EXT = ".exe";
+        static string PREVIEW_TARGET = "<this is constructed later>";
 
-        // set fShowArgsAlways to true if you want to *always* see a debugging 
-        // summary of the  incoming and outgoing args, overriding any other
-        // factors (key state results, etc).
-        public static bool fShowArgsAlways = true;
+        static string SETTINGS_TARGET_PATH =
+            Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
+        static string SETTINGS_TARGET_BASE = "SchackMediaViewer";
+        static string SETTINGS_TARGET_BASE_APPENDAGE = "";
+        static string SETTINGS_TARGET_EXT = ".exe";
+        static string SETTINGS_TARGET = "<this is constructed later>";
 
         #endregion Configure
 
@@ -92,8 +130,8 @@ namespace SchackSaverStub
         // used to open that window; however, this option allows us to get the 
         // window opened in circumstances where no user input is available 
         // (like when we draw our preview in the control panel).
-        public const string FILE_DBGWIN = ".popdbgwin";
-        public const string POPDBGWIN = @"/popdbgwin";
+        const string FILE_DBGWIN = ".popdbgwin";
+        const string POPDBGWIN = @"/popdbgwin";
         public static bool modifierKeyState_DoPopDBGWin = false;
 
         // Filename elements, command line args and keystate results (certain 
@@ -103,8 +141,8 @@ namespace SchackSaverStub
         // debug output window". Ordinarily we only start generating debug 
         // output after we open a debug output window, which means we can't
         // display any debug output generated during startup.
-        public const string FILE_STARTBUFFER = ".startbuffer";
-        public const string STARTBUFFER = @"/startbuffer";
+        const string FILE_STARTBUFFER = ".startbuffer";
+        const string STARTBUFFER = @"/startbuffer";
         public static bool modifierKeyState_DoStartBuffer = false;
 
         // Keystate result that tells the stub to show a message box before
@@ -112,23 +150,30 @@ namespace SchackSaverStub
         // the stub by windows, and the args the stub will feed to our app at
         // launch. The message box also allows us to simply read the data and
         // then cancel the app launch (debugging assistance).
-        public static bool modifierKeyState_DoShowArgs = false;
+        static bool modifierKeyState_DoShowArgs = false;
 
         // Keystate result that tells the stub to ignore any previous TARGET_PATH
         // configuration and only launch the application from stub directory.
-        public static bool modifierKeyState_ForceNormalLaunch = false;
+        static bool modifierKeyState_ForceNormalLaunch = false;
+
+        // flag which tells the stub to launch separate apps for each CP mode
+        static bool fUseSeparateExes = false;
+
+        // Constant values used when setting paths
+        const string PREVIEW_APPENDAGE = "_CP_PREVIEW";
+        const string SETTINGS_APPENDAGE = "_CP_SETTINGS";
 
         // Command line args that the stub will issue to our application:
         // 1. tells app that it was launched from the screen saver stub
-        public const string FROMSTUB = @"/scr";
+        const string FROMSTUB = @"/scr";
         // 2. tells app to open settings dlg in control panel
-        public const string M_CP_CONFIGURE = @"/cp_configure";
+        const string M_CP_CONFIGURE = @"/cp_configure";
         // 3. tells app to draw screen saver in tiny control panel preview
-        public const string M_CP_MINIPREVIEW = @"/cp_minipreview";
+        const string M_CP_MINIPREVIEW = @"/cp_minipreview";
         // 4. tells app to open settings dlg on desktop
-        public const string M_DT_CONFIGURE = @"/dt_configure";  
+        const string M_DT_CONFIGURE = @"/dt_configure";  
         // 5. tells app to open the screen saver in full screen
-        public const string M_SCREENSAVER = @"/screensaver";
+        const string M_SCREENSAVER = @"/screensaver";
 
         #endregion Data
 
@@ -139,12 +184,12 @@ namespace SchackSaverStub
         [STAThread]
         public static void Main(string[] mainArgs)
         {
+            string FinalArgs = "";
+            string optionalArgs = "";
+
             // capture state of modifier keys at launch
             Keys mKeys = Control.ModifierKeys;
             bool fAbortLaunch = false;
-
-            string FinalArgs = "";
-            string optionalArgs = "";
 
             // Interpret any Modifier Keys held down at startup
             InterpretModifierKeys(mKeys, ref fAbortLaunch);
@@ -159,17 +204,36 @@ namespace SchackSaverStub
             // Combine the primary and optional args
             FinalArgs += optionalArgs;
 
-            // Build the TARGET. Override TARGET_PATH if necessary
-            if (DebugDefined && UseDevPath &&
-                !modifierKeyState_ForceNormalLaunch)
+            // Override TARGET_PATH if necessary
+            if (DebugDefined && UseDevPathDefined)
             {
-                TARGET_PATH = @"C:\Users\LocallyMe\Source\Repos\" +
-                    @"SchackMediaViewer\V1\SchackMediaViewer\bin\Debug";
+                if (!modifierKeyState_ForceNormalLaunch)
+                {
+                    TARGET_PATH = @"C:\Users\LocallyMe\Source\Repos\" +
+                        @"SchackMediaViewer\V1\SchackMediaViewer\bin\Debug";
+
+                    // Override filenames if necessary
+                    if (UseSeparateExesDefined && 
+                        !fNeverSeparateDebugExesOverride)
+                    {
+                        PREVIEW_TARGET_BASE_APPENDAGE = PREVIEW_APPENDAGE;
+                        SETTINGS_TARGET_BASE_APPENDAGE = SETTINGS_APPENDAGE;
+                    }
+                }
             }
-            TARGET = Path.Combine(TARGET_PATH, TARGET_BASE + TARGET_EXT);
+
+            // Build the TARGET(s). 
+            TARGET = Path.Combine(TARGET_PATH, TARGET_BASE +
+                TARGET_BASE_APPENDAGE + TARGET_EXT);
+            PREVIEW_TARGET = Path.Combine(PREVIEW_TARGET_PATH, 
+                PREVIEW_TARGET_BASE + PREVIEW_TARGET_BASE_APPENDAGE + 
+                PREVIEW_TARGET_EXT);
+            SETTINGS_TARGET = Path.Combine(SETTINGS_TARGET_PATH, 
+                SETTINGS_TARGET_BASE + SETTINGS_TARGET_BASE_APPENDAGE +
+                SETTINGS_TARGET_EXT);
 
             // Optionally show message box with incoming and outgoing args
-            if (modifierKeyState_DoShowArgs || fShowArgsAlways)
+            if (modifierKeyState_DoShowArgs || fShowArgsOverride)
             {
                 DialogResult dr = MessageBox.Show("Incoming cmdLine: " + 
                     System.Environment.CommandLine + Environment.NewLine +
@@ -211,8 +275,13 @@ namespace SchackSaverStub
             System.Diagnostics.Process proc = null;
             if (FinalArgs.Contains(M_CP_CONFIGURE))
             {
-                proc = System.Diagnostics.Process.Start(TARGET, FinalArgs);
+                proc = System.Diagnostics.Process.Start(SETTINGS_TARGET, FinalArgs);
                 proc.WaitForExit();  // don't let stub die until app dies
+                return;
+            }
+            else if (FinalArgs.Contains(M_CP_MINIPREVIEW))
+            {
+                proc = System.Diagnostics.Process.Start(PREVIEW_TARGET, FinalArgs);
                 return;
             }
             else  // in all other cases, fire and forget
@@ -245,8 +314,8 @@ namespace SchackSaverStub
                 modifierKeyState_DoShowArgs = false;
             }
 
-            // set fAlwaysDescribeKeys to true to force this debug dialog up
-            if (fAlwaysDescribeKeys)
+            // set fShowKeystatesOverride to true to force this debug dialog up
+            if (fShowKeystatesOverride)
             {
                 string msg = "Keys States: " + Environment.NewLine +
                     Environment.NewLine + 
@@ -263,14 +332,14 @@ namespace SchackSaverStub
                     Application.ProductName,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
-
             }
 
             // If DEBUG was defined, see if we need to force normal launch
             if (DebugDefined)
             {
                 if (Control.IsKeyLocked(Keys.Scroll) && 
-                    Control.IsKeyLocked(Keys.CapsLock))
+                    Control.IsKeyLocked(Keys.CapsLock) &&
+                    !modifierKeyState_ForceNormalLaunch)
                 {
                     string msg = "Debug Build: Caps Lock and Scroll " +
                         "Lock are both locked. Force non-debug launch?" +
@@ -407,20 +476,25 @@ namespace SchackSaverStub
             }
         }
 
-        #region Translate Pound Defines to Variables
+    #region Translate Pound Defines to Variables
 
-        #if DEBUG
-                public static bool DebugDefined = true;
-            #if LAUNCH_APP_FROM_DEV_PATH
-                    public static bool UseDevPath = true;
+    #if DEBUG
+        public static bool DebugDefined = true;
+        #if USE_DEV_PATH
+            public static bool UseDevPathDefined = true;
+            #if SEPARATE_DBG_EXES
+                public static bool UseSeparateExesDefined = true;
             #else
-                                    public static bool UseDevPath = true;
+                public static bool UseSeparateExesDefined = false;
             #endif
         #else
-            public static bool DebugDefined = false;
+            public static bool UseDevPathDefined = true;
         #endif
+    #else
+            public static bool DebugDefined = false;
+    #endif
 
-        #endregion Translate Pound Defines to Variables
+    #endregion Translate Pound Defines to Variables
 
 
     }

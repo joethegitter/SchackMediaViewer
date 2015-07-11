@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;LAUNCH_APP_FROM_DEV_PATH</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;USE_DEV_PATH; SEPARATE_DBG_EXES</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
