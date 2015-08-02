@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TestTech_WPF_ScSvStub.Properties
+namespace TestTech_ConfigSettings.Properties
 {
 
 
@@ -44,7 +44,7 @@ namespace TestTech_WPF_ScSvStub.Properties
             {
                 if ((resourceMan == null))
                 {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TestTech_WPF_ScSvStub.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TestTech_ConfigSettings.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

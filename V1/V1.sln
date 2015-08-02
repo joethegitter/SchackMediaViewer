@@ -5,11 +5,17 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTech_WPF_HwndSource", "TestTech_WPF_HwndSource\TestTech_WPF_HwndSource.csproj", "{F8A31D35-E6B4-45CC-AB7D-AE66CDCFBAAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTech_WPF_ScSvStub", "TestTech_WPF_ScSvStub\TestTech_WPF_ScSvStub.csproj", "{03657C77-A83B-4F89-8B57-A55015A2550C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Winforms_ScSvStub", "Winforms_ScSvStub\Winforms_ScSvStub.csproj", "{3CC8F454-8C27-46AF-A709-38ADE24B2C43}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchackMediaViewer", "SchackMediaViewer\SchackMediaViewer.csproj", "{8E6EB62B-3691-44F4-A44A-10001227DAE1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF_ScSvStub", "WPF_ScSvStub\WPF_ScSvStub.csproj", "{B949E44A-80E9-4EB0-81A5-376A5A2C6D70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTech_ConfigSettings", "TestTech_ConfigSettings\TestTech_ConfigSettings.csproj", "{0E0745A4-0650-4BE2-85A1-79909F65D636}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestTech_WinForms_ConfigSettingsEditor", "TestTech_WinForms_ConfigSettingsEditor\TestTech_WinForms_ConfigSettingsEditor.csproj", "{A4022960-96FD-490F-AB33-5788BDA3323B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinForm_Launcher", "WinForm_Launcher\WinForm_Launcher.csproj", "{16E6EA50-6792-4085-9DEE-0A96D48F66CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,10 +27,6 @@ Global
 		{F8A31D35-E6B4-45CC-AB7D-AE66CDCFBAAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8A31D35-E6B4-45CC-AB7D-AE66CDCFBAAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8A31D35-E6B4-45CC-AB7D-AE66CDCFBAAB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{03657C77-A83B-4F89-8B57-A55015A2550C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{03657C77-A83B-4F89-8B57-A55015A2550C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{03657C77-A83B-4F89-8B57-A55015A2550C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{03657C77-A83B-4F89-8B57-A55015A2550C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3CC8F454-8C27-46AF-A709-38ADE24B2C43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3CC8F454-8C27-46AF-A709-38ADE24B2C43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CC8F454-8C27-46AF-A709-38ADE24B2C43}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +35,22 @@ Global
 		{8E6EB62B-3691-44F4-A44A-10001227DAE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E6EB62B-3691-44F4-A44A-10001227DAE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E6EB62B-3691-44F4-A44A-10001227DAE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B949E44A-80E9-4EB0-81A5-376A5A2C6D70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B949E44A-80E9-4EB0-81A5-376A5A2C6D70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B949E44A-80E9-4EB0-81A5-376A5A2C6D70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B949E44A-80E9-4EB0-81A5-376A5A2C6D70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E0745A4-0650-4BE2-85A1-79909F65D636}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E0745A4-0650-4BE2-85A1-79909F65D636}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E0745A4-0650-4BE2-85A1-79909F65D636}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E0745A4-0650-4BE2-85A1-79909F65D636}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4022960-96FD-490F-AB33-5788BDA3323B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4022960-96FD-490F-AB33-5788BDA3323B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4022960-96FD-490F-AB33-5788BDA3323B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4022960-96FD-490F-AB33-5788BDA3323B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16E6EA50-6792-4085-9DEE-0A96D48F66CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16E6EA50-6792-4085-9DEE-0A96D48F66CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16E6EA50-6792-4085-9DEE-0A96D48F66CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16E6EA50-6792-4085-9DEE-0A96D48F66CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

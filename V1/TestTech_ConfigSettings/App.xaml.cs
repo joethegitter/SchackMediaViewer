@@ -6,13 +6,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace TestTech_WPF_ScSvStub
+namespace TestTech_ConfigSettings
 {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
     {
-
     }
 }
