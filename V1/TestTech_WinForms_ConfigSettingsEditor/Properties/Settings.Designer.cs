@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Winforms_ScSvStub.Properties
+namespace TestTech_WinForms_ConfigSettingsEditor.Properties
 {
 
 

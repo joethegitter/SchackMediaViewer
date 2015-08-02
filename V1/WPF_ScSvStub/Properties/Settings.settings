@@ -1,0 +1,63 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="WPF_ScSvStub.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="TargetAppDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.</Value>
+    </Setting>
+    <Setting Name="TargetAppFilenameBase" Type="System.String" Scope="User">
+      <Value Profile="(Default)">SchackMediaViewer</Value>
+    </Setting>
+    <Setting Name="TargetAppFilenameExtension" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.exe</Value>
+    </Setting>
+    <Setting Name="MainTargetAppDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)"> @"C:\Users\LocallyMe\Source\Repos\SchackMediaViewer\V1\SchackMediaViewer\bin\Debug"</Value>
+    </Setting>
+    <Setting Name="MainTargetAppFilenameBase" Type="System.String" Scope="User">
+      <Value Profile="(Default)">SchackMediaViewer</Value>
+    </Setting>
+    <Setting Name="MainTargetAppFilenameAppendage" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="MainTargetAppFilenameExtension" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.exe</Value>
+    </Setting>
+    <Setting Name="CPPreviewTargetAppDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)"> @"C:\Users\LocallyMe\Source\Repos\SchackMediaViewer\V1\SchackMediaViewer\bin\Debug"</Value>
+    </Setting>
+    <Setting Name="CPPreviewTargetAppFilenameBase" Type="System.String" Scope="User">
+      <Value Profile="(Default)">SchackMediaViewer</Value>
+    </Setting>
+    <Setting Name="CPPreviewTargetAppFilenameAppendage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">_CPP_</Value>
+    </Setting>
+    <Setting Name="CPPreviewTargetAppFilenameExtension" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.exe</Value>
+    </Setting>
+    <Setting Name="CPConfigureTargetAppDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)"> @"C:\Users\LocallyMe\Source\Repos\SchackMediaViewer\V1\SchackMediaViewer\bin\Debug"</Value>
+    </Setting>
+    <Setting Name="CPConfigureTargetAppFilenameBase" Type="System.String" Scope="User">
+      <Value Profile="(Default)">SchackMediaViewer</Value>
+    </Setting>
+    <Setting Name="CPConfigureTargetAppFilenameAppendage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">_CPC_</Value>
+    </Setting>
+    <Setting Name="CPConfigureTargetAppFilenameExtension" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.exe</Value>
+    </Setting>
+    <Setting Name="UseDevDirectory" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="UseSeparateExes" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ShowCommandLines" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ShowModifierKeystates" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

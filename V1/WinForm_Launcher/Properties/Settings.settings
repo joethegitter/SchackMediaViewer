@@ -1,0 +1,33 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="WinForm_Launcher.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ScreenSaverAppFilenameAndExtension" Type="System.String" Scope="User">
+      <Value Profile="(Default)">SchackMediaViewer.exe</Value>
+    </Setting>
+    <Setting Name="ScreenSaverDisplayNameInControlPanel" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Media Schack</Value>
+    </Setting>
+    <Setting Name="UseAltScreenSaverDirectory" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="AltScreenSaverDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="dbgUseSeparateScreenSaverAppPerLaunchMode" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="dbgSepFullScreenAppFullyQualifiedPathAndFilename" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="dbgSepDesktopSettingsAppFullyQualifiedPathAndFilename" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="dbgSepCPSettingsAppFullyQualifiedPathAndFilename" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="dbgSepCPPreviewAppFullyQualifiedPathAndFilename" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+  </Settings>
+</SettingsFile>

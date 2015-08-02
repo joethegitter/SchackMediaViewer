@@ -1,0 +1,52 @@
+﻿About the Debug Settings Dialog
+-------------------------------
+
+This dialog (the Debug Settings Dialog) is displayed when you hold down the SHIFT key while this screen saver launcher runs. To avoid it in the future, do not hold down the SHIFT key.
+
+For users without access to a keyboard, this dialog will also be displayed if a file named "ScrSvrDlg.yes" is located in the same directory as this screen saver launcher (capitalization not required). To not see this dialog in the future, delete or rename that file.
+
+This dialog allows you to view the command line parameters that Windows has passed to the screen saver launcher plus the command line that will be used to launch the screen saver. It also allows you to configure various debugging information which changes the behavior of the screen saver launcher.
+
+If you click Cancel, this dialog will close and the screen saver will not be launched at all.
+
+If you click Launch Normal, this dialog will be closed and the screen saver will be launched with normal behavior (debug values will be ignored).
+
+If you click Launch Modified, this dialog will be closed and the screen saver will be launched using the last SAVED set of debug values. Please remember that you must save any changes you make to debug values before they will be used.
+
+If you check Show This Dialog From Now On, this dialog will be displayed every time the screen saver launcher runs.
+
+If you check Always Launch With Debug Values, then the screen saver launcher will always run using debug values, regardless of whether this dialog is displayed. To change this behavior, you will need to clear this check (or delete the (filename) file, located in the same directory as this screen saver launcher). This check mark is ignored if Launch Normal is clicked.
+
+To change debug values, modify them in the Property Grid below, and click Save Settings. Changes are recorded in the file (filename), located in the same directory as this screen saver. To reload the last Saved set of values, click Reload Settings.
+
+If you click Calculate Outgoing Parameters, this dialog will calculate and display the command line that will be used to launch the screen saver, with additional notes as warranted. The last saved debug values will be used in this calculation.
+
+
+About the Application Settings
+------------------------------
+
+ScreenSaverFilenameAndExtension – the filename and extension of the screen saver application.
+
+ScreenSaverDefaultLocation – the fully qualified path to the directory where the screen saver application can be found.
+
+ScreenSaverNameInList – the name to be displayed in the Control Panel screen saver list.
+
+
+
+About the Debug Settings 
+------------------------
+
+dbgUseAltScreenSaverLocation – if true, the screen saver launcher will look for the screen saver application by name in a directory specified in the debug variable AltScreenSaverDirectory, instead of the default directory (the same directory as the launcher).
+
+dbgAltScreenSaverLocation – the fully qualified path to the directory where the launcher will find the screen saver application.
+
+dbgUseAltScreenSaverPerLaunchMode – if true, the screen saver launcher will launch a specific application for each of the screen saver modes (full screen, control panel preview, control panel settings, desktop settings). These applications (which may be the same application) are identified in corresponding debug variables. If true, dbgUseAltScreenSaverLocation and dbgAltScreenSaverLocation are ignored.
+
+dbgAltFullScreenAppLocation – the fully qualified path and filename of the application which will be launched when Windows requests a screen saver in FullScreen mode.
+
+dbgAltDesktopSettingsAppLocation - the fully qualified path and filename of the application which will be launched when Windows requests a screen saver in “Open Settings Dialog on Desktop” mode.
+
+dbgAltCPSettingsAppLocation - the fully qualified path and filename of the application which will be launched when Windows requests a screen saver in “Open Settings in Control Panel” mode.
+
+dbgAltCPPreviewAppLocation - the fully qualified path and filename of the application which will be launched when Windows requests a screen saver in “Show Preview in Control Panel” mode.
+
