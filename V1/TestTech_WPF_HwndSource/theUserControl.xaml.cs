@@ -14,7 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using System.Windows.Interop;
-using JoeKCo.Utilities;
+//using JoeKCo.Utilities;
 
 namespace TestTech_WPF_HwndSource
 {

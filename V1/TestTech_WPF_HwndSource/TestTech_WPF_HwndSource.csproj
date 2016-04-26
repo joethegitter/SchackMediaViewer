@@ -55,7 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="..\..\..\DebugUtils\DebugUtils\NativeMethods.cs">
+    <Compile Include="..\..\..\Utilities\DebugUtils\NativeMethods.cs">
       <Link>NativeMethods.cs</Link>
     </Compile>
     <Compile Include="App.xaml.cs">
